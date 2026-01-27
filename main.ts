@@ -35,6 +35,9 @@ namespace RibBitGPS {
         satellites: 0
     }
 
+    let gpsState = false;
+    let autoUpdateTime = false;
+
     let _nmeaDataHandler: (line: string) => void = () => {}
     let _updateHandler: () => void = () => {};
     
@@ -143,19 +146,31 @@ namespace RibBitGPS {
 
     //% block="switch gps $state \u26A0"
     export function switchGPS(state: RibBit.OnOff = RibBit.OnOff.On): void {
-        return
+        if( state == RibBit.OnOff.On ) {
+            RibBit.ribbit_cmd( RibBit.Device.GPS, RibBit.Command.POWER_ENABLE );
+            gpsState = true;
+        } else {
+            RibBit.ribbit_cmd( RibBit.Device.GPS, RibBit.Command.POWER_DISABLE );
+            gpsState = false;
+        }
     }
 
     //% block="is GPS on? \u26A0"
     //% advanced="true"
     export function isGPSOn(): boolean {
-        return false;
+        return gpsState;
     }
 
-    //% block="on a position update \u26A0"
+    //% block="on a position update"
     //% group="Spatial Functions"
-    export function on2DPositionUpdate(cb: () => void): void {
-        return
+    export function onPositionUpdate(cb: () => void): void {
+        _updateHandler = cb;
+    }
+
+    //% block="on a NEMA event $nmea"
+    //% group="Spatial Functions"
+    export function onNEMAData(cb: (nema: string) => void): void {
+        _nmeaDataHandler = cb;
     }
 
     //% block="accuracy \u26A0"

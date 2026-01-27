@@ -40,6 +40,15 @@ namespace RibBitGPS {
 
     let _nmeaDataHandler: (line: string) => void = () => {}
     let _updateHandler: () => void = () => {};
+
+    let inputBuffer = "";
+    RibBit.__nmeaString = ( fragment: string ) => {
+        inputBuffer = inputBuffer + fragment;
+        if( inputBuffer.indexOf('\n') > -1 ) {
+            parseNMEA( inputBuffer.split('\n', 2)[0] );
+        }
+        return;
+    }
     
     function parseNMEA(input: string): void {
         try { _nmeaDataHandler(input); } catch (err) { /* ... */ }
@@ -167,9 +176,9 @@ namespace RibBitGPS {
         _updateHandler = cb;
     }
 
-    //% block="on a NEMA event $nmea"
+    //% block="on a NMEA event"
     //% group="Spatial Functions"
-    export function onNEMAData(cb: (nema: string) => void): void {
+    export function onNEMAData(cb: (nmea: string) => void): void {
         _nmeaDataHandler = cb;
     }
 

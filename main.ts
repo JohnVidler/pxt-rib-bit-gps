@@ -141,6 +141,28 @@ namespace RibBitGPS {
 
     // ===== //
 
+    //% block="has 2D fix"
+    //% blockId="rib_bit_gps_has2dfix"
+    //% group="Spatial Functions"
+    export function has2DFix(): boolean {
+        return location.fixType === LocationFixType.FIX_2D;
+    }
+
+    //% block="has 3D fix"
+    //% blockId="rib_bit_gps_has3dfix"
+    //% group="Spatial Functions"
+    export function has3DFix(): boolean {
+        return location.fixType === LocationFixType.FIX_3D;
+    }
+
+    //% block="satellites tracking"
+    //% blockId="rib_bit_gps_numsatellites"
+    //% group="Spatial Functions"
+    //% advanced="true"
+    export function satellites(): number {
+        return location.satellites;
+    }
+
     //% block="$v as long float number, to $precision decimal places"
     //% advanced="true"
     export function toLongFloatString(v: number, precision: number = 8): string {

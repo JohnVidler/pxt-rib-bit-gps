@@ -178,10 +178,12 @@ namespace RibBitGPS {
     //% block="switch gps $state \u26A0"
     export function switchGPS(state: RibBit.OnOff = RibBit.OnOff.On): void {
         if( state == RibBit.OnOff.On ) {
-            RibBit.ribbit_cmd( RibBit.Device.GPS, RibBit.Command.POWER_ENABLE );
+            if( gpsState != true )
+                RibBit.ribbit_cmd( RibBit.Device.GPS, RibBit.Command.POWER_ENABLE );
             gpsState = true;
         } else {
-            RibBit.ribbit_cmd( RibBit.Device.GPS, RibBit.Command.POWER_DISABLE );
+            if (gpsState != false)
+                RibBit.ribbit_cmd( RibBit.Device.GPS, RibBit.Command.POWER_DISABLE );
             gpsState = false;
         }
     }
